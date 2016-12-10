@@ -16,6 +16,9 @@
 #include <boost/python.hpp>
 
 using namespace std;
+/*
+这是释放python GIL的类，如果要利用多核，必须释放python的GIL
+ */
 class releaseGIL{
 public:
     inline releaseGIL(){
@@ -29,6 +32,10 @@ public:
 private:
     PyThreadState *save_state;
 };
+/*
+获取人脸检测的句柄
+此部分在后来的多线程容易出错，申请的内存会常常被python的GC回收
+ */
 long get_handle()
 {
     faceall_handle_t detect_and_landmark_handle;
@@ -36,7 +43,9 @@ long get_handle()
     std::cout << "load model" << endl;
     return (long)detect_and_landmark_handle;
 }
-
+/*
+人脸检测，boost::python使用，可以看出boost::python和python一样类似写法
+ */
 boost::python::list Detect_landmark(long detect_and_landmark_handle_i, std::string img_path)
 {
         releaseGIL unlockGIL = releaseGIL();
@@ -89,7 +98,9 @@ boost::python::list Detect_landmark(long detect_and_landmark_handle_i, std::stri
         std::cout << "mult2" << std::endl;
         return result;
 }
-
+/*
+生成pyhton可调用库的关键字
+ */
 BOOST_PYTHON_MODULE(detect)
 {
     using namespace boost::python;
