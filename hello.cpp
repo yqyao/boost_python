@@ -9,4 +9,4 @@ BOOST_PYTHON_MODULE(detect)
 {
     using namespace boost::python;
     def("greet", test);
-}
+} 
