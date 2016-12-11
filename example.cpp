@@ -136,5 +136,6 @@ BOOST_PYTHON_MODULE(detect)
     using namespace boost::python;
     def("Detect_landmark", &Detect_landmark);
     def("get_handle", &get_handle);
+    def("test", &test);
 
 }
