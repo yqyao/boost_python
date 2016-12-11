@@ -33,6 +33,36 @@ private:
     PyThreadState *save_state;
 };
 /*
+big circle for test
+ */
+float big_circle(float lon1,float lat1,float lon2,float lat2)
+{
+    float radius = 3956.0;
+    float pi = 3.14159265;
+    float x = pi/180.0;  
+    float a,b,theta,c;  
+  
+    a = (90.0-lat1)*(x);  
+    b = (90.0-lat2)*(x);  
+    theta = (lon2-lon1)*(x); 
+    c = acosf((cosf(a)*cosf(b)) + (sinf(a)*sinf(b)*cosf(theta)));   
+    return radius*c ; 
+}
+/*
+do the big_circle about 1000000 
+ */
+void test()
+{
+    releaseGIL unlockGIL = releaseGIL();
+    float lon1 = -72.345;
+    float lat1 = 34.243;
+    float lon2 = -61.823;
+    float lat2 = 54.826;
+    float result = 0; 
+    for(int i = 0; i < 1000000; i++)
+        result = big_circle(lon1, lat1, lon2, lat2);
+}
+/*
 获取人脸检测的句柄
 此部分在后来的多线程容易出错，申请的内存会常常被python的GC回收
  */
